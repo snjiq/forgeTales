@@ -1,0 +1,45 @@
+﻿<Page x:Class="ForgeTales.Pages.AniVisualNewsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Новости AniVisual"
+      Background="#F9F9F9">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Toolbar -->
+        <Border Grid.Row="0" Background="#646BC5" Padding="10" Effect="{StaticResource ShadowEffect}">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Назад" Width="80" Margin="0 0 10 0"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Click="BackButton_Click"/>
+
+                <Button Content="Обновить" Width="80" Margin="0 0 10 0"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Click="RefreshButton_Click"/>
+
+                <Button Content="Открыть в браузере" 
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Click="OpenInBrowser_Click"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Web Browser -->
+        <WebBrowser x:Name="NewsBrowser" Grid.Row="1"
+                   LoadCompleted="NewsBrowser_LoadCompleted"/>
+
+        <!-- Loading Indicator -->
+        <Border Grid.Row="1" Background="#CCFFFFFF" 
+                x:Name="LoadingIndicator" Visibility="Collapsed">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressBar IsIndeterminate="True" Width="200" Height="6"
+                             Style="{StaticResource ModernProgressBar}"/>
+                <TextBlock Text="Загрузка новостей..." Margin="0 10 0 0"
+                           Foreground="{StaticResource TextPrimary}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>
