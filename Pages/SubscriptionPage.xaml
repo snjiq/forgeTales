@@ -1,0 +1,78 @@
+﻿<Page x:Class="ForgeTales.Pages.SubscriptionPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Подписки"
+      Background="#F9F9F9">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Панель управления -->
+        <Border Grid.Row="0" Background="#646BC5" Padding="10">
+            <Button Content="Назад" HorizontalAlignment="Left"
+                    Click="BackButton_Click" Width="100"/>
+        </Border>
+
+        <!-- Основное содержимое -->
+        <ScrollViewer Grid.Row="1" Padding="20">
+            <StackPanel>
+                <!-- Информация о пользователе -->
+                <Border Background="White" CornerRadius="8" Padding="15" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock x:Name="UsernameTextBlock" FontSize="16" FontWeight="Bold"/>
+                        <TextBlock x:Name="CurrentSubscriptionText" Margin="0,5,0,0"/>
+                        <TextBlock x:Name="HeartsTextBlock" Foreground="#FF5252" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Список подписок -->
+                <TextBlock Text="Доступные подписки" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                <ListView x:Name="SubscriptionsListBox" BorderThickness="0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#CCCCCC" BorderThickness="0,0,0,1" Padding="10,5">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                                    <TextBlock Text="{Binding MonthlyPrice, StringFormat='Цена: {0} руб./месяц'}" 
+                                               Foreground="Green" Margin="0,5,0,0"/>
+                                    <TextBlock Text="{Binding HeartsBonus, StringFormat='Бонус: {0} сердечек'}" 
+                                               Foreground="#FF5252" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <!-- Кнопка оформления -->
+                <Button Content="Оформить подписку" HorizontalAlignment="Right"
+                        Click="SubscribeButton_Click" Margin="0,20,0,0" Padding="10,5"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Панель оплаты с QR-кодом -->
+        <Border x:Name="PaymentPanel" Grid.RowSpan="2" Background="#80000000" Visibility="Collapsed">
+            <Border Background="White" CornerRadius="10" Padding="20" Width="400" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="Оплата подписки" FontSize="18" FontWeight="Bold" 
+                               HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="SubscriptionDetailsText" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                    <TextBlock x:Name="AmountTextBlock" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBlock x:Name="HeartsBonusText" Foreground="#FF5252" Margin="0,5,0,0"/>
+                    <Image x:Name="QrCodeImage" Width="300" Height="300" Margin="0,20" 
+                           HorizontalAlignment="Center"/>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                        <Button Content="Я оплатил" Width="120" Click="CheckPaymentButton_Click"
+                                Margin="0,0,10,0" Padding="10,5" Background="#646BC5" Foreground="White"/>
+                        <Button Content="Отмена" Width="120" Click="CancelPaymentButton_Click"
+                                Padding="10,5" Background="#FF5252" Foreground="White"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
+</Page>

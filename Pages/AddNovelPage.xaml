@@ -1,0 +1,97 @@
+﻿<Page x:Class="ForgeTales.Pages.AddNovelPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Добавить новеллу"
+      Background="#F9F9F9">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20">
+        <Grid Width="600" HorizontalAlignment="Center">
+            <Border Background="White" CornerRadius="8" Padding="20"
+                    BorderBrush="#E0E0E0" BorderThickness="1"
+                    Effect="{StaticResource ShadowEffect}">
+                <StackPanel>
+                    <TextBlock Text="Добавление новеллы"
+                               FontSize="20" FontWeight="Bold"
+                               Foreground="#646BC5"
+                               Margin="0 0 0 20"/>
+
+                    <!-- Cover Section -->
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
+                        <Border Width="150" Height="200" Background="#F0F0F0"
+                                CornerRadius="4" BorderThickness="1"
+                                BorderBrush="#E0E0E0">
+                            <Image x:Name="CoverImage" Stretch="Uniform"
+                                   Source="/Images/default-cover.jpg"/>
+                        </Border>
+
+                        <StackPanel Margin="15 0 0 0" VerticalAlignment="Center">
+                            <Button Content="Сгенерировать обложку"
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    Click="GenerateCoverButton_Click"/>
+
+                            <Button Content="Загрузить обложку"
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    Margin="0 10 0 0"
+                                    Click="UploadCoverButton_Click"/>
+
+                            <Button x:Name="RenPyUploadButton" 
+            Content="Загрузить проект Ren'Py"
+            Click="UploadRenPyProject_Click"
+            Style="{StaticResource SecondaryButtonStyle}"/>
+
+                            <TextBlock x:Name="RenPyStatusText" 
+               Margin="0 5 0 0"
+               Foreground="Gray"
+               FontStyle="Italic"
+               TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Form Fields -->
+                    <TextBox x:Name="TitleTextBox" Tag="Название"
+                             Style="{StaticResource FloatingLabelTextBox}"/>
+
+                    <ComboBox x:Name="GenreComboBox" Margin="0 15 0 0"
+                              Style="{StaticResource FloatingLabelComboBox}"
+                              DisplayMemberPath="Name"/>
+
+                    <TextBox x:Name="DescriptionTextBox" Tag="Описание"
+                              Margin="0 15 0 0" MinHeight="100"
+                              Style="{StaticResource FloatingLabelTextBox}"
+                              TextWrapping="Wrap" AcceptsReturn="True"/>
+
+                    <!-- Chapter Section -->
+                    <TextBlock Text="Первая глава" FontSize="16"
+                               FontWeight="Bold" Foreground="#646BC5"
+                               Margin="0 25 0 10"/>
+
+                    <TextBox x:Name="ChapterTitleTextBox" Tag="Название главы"
+                             Text="Глава 1"
+                             Style="{StaticResource FloatingLabelTextBox}"/>
+
+                    <TextBox x:Name="ChapterContentTextBox" Tag="Содержание"
+                              Margin="0 15 0 0" MinHeight="200"
+                              Style="{StaticResource FloatingLabelTextBox}"
+                              TextWrapping="Wrap" AcceptsReturn="True"
+                              VerticalScrollBarVisibility="Auto"
+                              IsEnabled="{Binding ElementName=RenPyUploadButton, Path=Tag, Converter={StaticResource NullToBooleanConverter}}"/>
+
+                    <TextBlock x:Name="RenPyPathText" Margin="0 5 0 0"
+                              Foreground="Green" TextWrapping="Wrap"/>
+
+                    <!-- Action Buttons -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                                Margin="0 25 0 0">
+                        <Button Content="Отмена" Width="120"
+                                Style="{StaticResource CancelButtonStyle}"
+                                Click="CancelButton_Click"/>
+
+                        <Button x:Name="SaveButton" Content="Сохранить" Width="120" Margin="10 0 0 0"
+        Style="{StaticResource ActionButtonStyle}"
+        Click="SaveButton_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</Page>

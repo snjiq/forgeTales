@@ -1,0 +1,190 @@
+﻿<Page x:Class="ForgeTales.Pages.NovelsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:local="clr-namespace:ForgeTales.Converters"
+      mc:Ignorable="d"
+      Title="Каталог новелл" 
+      Background="#F9F9F9">
+
+    <Page.Resources>
+        <local:CoverImageConverter x:Key="CoverImageConverter"/>
+
+        <Style x:Key="NovelCardStyle" TargetType="Border">
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Height" Value="260"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Effect" Value="{StaticResource ShadowEffect}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             To="0.9" Duration="0:0:0.2"/>
+                            <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                To="8 8 12 12" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             To="1" Duration="0:0:0.2"/>
+                            <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                To="10" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Search and filter panel -->
+        <Border Grid.Row="0" Background="#646BC5" Padding="15" Effect="{StaticResource ShadowEffect}">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBox x:Name="SearchTextBox" Width="300" 
+                         Text="Поиск новелл..." 
+                         Foreground="Gray"
+                         GotFocus="SearchTextBox_GotFocus"
+                         LostFocus="SearchTextBox_LostFocus"
+                         TextChanged="SearchTextBox_TextChanged"/>
+
+                <ComboBox x:Name="AuthorComboBox" Width="250" Margin="15,0,0,0"
+                         
+                          DisplayMemberPath="Name"
+                          SelectionChanged="AuthorComboBox_SelectionChanged"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Main content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+            <ItemsControl x:Name="GenresItemsControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,0,0,30">
+                            <!-- Genre header -->
+                            <TextBlock Text="{Binding GenreName}" 
+                                       FontSize="18" 
+                                       FontWeight="Bold"
+                                       Foreground="#646BC5"
+                                       Margin="0 0 0 10"/>
+
+                            <!-- Novels list -->
+                            <ListView ItemsSource="{Binding Novels}"
+                                      Background="Transparent"
+                                      BorderThickness="0"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Style="{StaticResource NovelCardStyle}"
+                                                MouseLeftButtonDown="NovelCard_MouseLeftButtonDown">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="180"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <!-- Cover -->
+                                                <Border Grid.Row="0" CornerRadius="8 8 0 0" 
+                                                        Background="#F0F0F0">
+                                                    <Image Source="{Binding CoverImageUrl, Converter={StaticResource CoverImageConverter}}"
+       Stretch="UniformToFill"
+       RenderOptions.BitmapScalingMode="HighQuality">
+                                                        <Image.Triggers>
+                                                            <EventTrigger RoutedEvent="Image.Loaded">
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                     From="0" To="1" Duration="0:0:0.5"/>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </EventTrigger>
+                                                        </Image.Triggers>
+                                                    </Image>
+                                                </Border>
+
+                                                <!-- Info -->
+                                                <Border Grid.Row="1" CornerRadius="0 0 8 8" 
+                                                        Background="White" Padding="10">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Title}" 
+                                                                   FontWeight="SemiBold"
+                                                                   TextWrapping="Wrap"
+                                                                   MaxHeight="40"
+                                                                   TextTrimming="CharacterEllipsis"/>
+
+                                                        <TextBlock Text="{Binding Author.Name}" 
+                                                                   FontSize="12"
+                                                                   Foreground="#6886C5"
+                                                                   Margin="0,5,0,0"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Loading indicator -->
+        <Border x:Name="LoadingIndicator" 
+                Grid.Row="1" 
+                Background="#CCFFFFFF" 
+                Visibility="Collapsed"
+                Panel.ZIndex="1">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressBar IsIndeterminate="True" Width="200" Height="6"
+                             Style="{StaticResource ModernProgressBar}"/>
+                <TextBlock Text="Загрузка..." Margin="0,10,0,0"
+                           Foreground="#646BC5" FontWeight="SemiBold"/>
+            </StackPanel>
+        </Border>
+
+        <!-- No results message -->
+        <Border x:Name="NoResultsText" 
+                Grid.Row="1"
+                Background="White"
+                CornerRadius="8"
+                Padding="20"
+                Visibility="Collapsed"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Effect="{StaticResource ShadowEffect}">
+            <StackPanel>
+                <Path Data="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M13,17h-2v-2h2V17z M13,13h-2V7h2V13z"
+                      Fill="#646BC5" Width="40" Height="40"
+                      Stretch="Uniform" HorizontalAlignment="Center"
+                      Margin="0 0 0 10"/>
+                <TextBlock Text="Новеллы не найдены" 
+                           FontSize="16" FontWeight="Bold"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Попробуйте изменить критерии поиска" 
+                           Margin="0 5 0 0"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>
